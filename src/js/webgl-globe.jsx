@@ -4,8 +4,7 @@ import React from 'react';
 import Detector from '../third-party/Detector.js';
 import TWEEN from '../third-party/Tween.js';
 import DAT from './globe.js';
-
-// import SearchForm  from './search-form.jsx';
+import SearchForm  from './search-form.jsx';
 
 class WebGLGlobe extends React.Component {
   render() {
@@ -18,6 +17,7 @@ class WebGLGlobe extends React.Component {
         </div>
 
         <div id="currentInfo">
+          <SearchForm />
           <span ref="year1990" className="year">1990</span>
           <span ref="year1995" className="year">1995</span>
           <span ref="year2000" className="year">2000</span>
@@ -30,6 +30,7 @@ class WebGLGlobe extends React.Component {
     return false;
   }
   componentDidMount() {
+    var _this = this;
     var container = ReactDOM.findDOMNode(this);
     if(!Detector.webgl){
       Detector.addGetWebGLMessage();
@@ -42,9 +43,8 @@ class WebGLGlobe extends React.Component {
 
       var settime = function(globe, t) {
         return function() {
-          console.log("hello" + t);
           new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
-          var y = ReactDOM.findDOMNode(this.refs[('year'+years[t])]);
+          var y = ReactDOM.findDOMNode(_this.refs[('year'+years[t])]);
           if (y.getAttribute('class') === 'year active') {
             return;
           }
@@ -55,6 +55,7 @@ class WebGLGlobe extends React.Component {
           y.setAttribute('class', 'year active');
         };
       };
+      TWEEN.start();
 
       for(i = 0; i<years.length; i++) {
         var y = ReactDOM.findDOMNode(this.refs[('year'+years[i])]);
