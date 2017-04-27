@@ -10,8 +10,8 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-
-var THREE = require("../third-party/three.min.js");
+import THREELib from "three-js";
+var THREE = THREELib();
 
 var DAT = {};
 
@@ -106,7 +106,9 @@ DAT.Globe = function(container, opts) {
     shader = Shaders['earth'];
     uniforms = THREE.UniformsUtils.clone(shader.uniforms);
 
-    uniforms['texture'].value = THREE.ImageUtils.loadTexture(imgDir+'world.jpg');
+    var loader = new THREE.TextureLoader();
+
+    uniforms['texture'].value = loader.load(imgDir+'world.jpg');
 
     material = new THREE.ShaderMaterial({
 
@@ -268,7 +270,7 @@ DAT.Globe = function(container, opts) {
 
     }
 
-    THREE.GeometryUtils.merge(subgeo, point);
+    subgeo.merge(point.geometry, point.matrix);
   }
 
   function onMouseDown(event) {
