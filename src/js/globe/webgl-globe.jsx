@@ -1,14 +1,14 @@
-import ReactDOM from 'react-dom'
-import json_data from '../../www/assets/population909500.json'
-var React = require('react'),
-Detector = require('./third-party/Detector.js'),
-TWEEN = require('./third-party/Tween.js'),
-DAT = require('./globe.js');
+import ReactDOM from 'react-dom';
+import json_data from '../../www/assets/population909500.json';
+import React from 'react';
+import Detector from './third-party/Detector.js';
+import TWEEN from './third-party/Tween.js';
+import DAT from './globe.js';
 
 // import SearchForm  from './search-form.jsx';
 
-var WebGLGlobe = React.createClass({
-  render: function() {
+class WebGLGlobe extends React.Component {
+  render() {
     return (
       <div>
         <div className="container" ref="container"></div>
@@ -25,12 +25,11 @@ var WebGLGlobe = React.createClass({
 
       </div>
     );
-  },
-  shouldComponentUpdate: function(nextProps, nextState) {
+  }
+  shouldComponentUpdate(nextProps, nextState) {
     return false;
-  },
-  componentDidMount: function() {
-    var _this = this;
+  }
+  componentDidMount() {
     var container = ReactDOM.findDOMNode(this);
     if(!Detector.webgl){
       Detector.addGetWebGLMessage();
@@ -44,7 +43,7 @@ var WebGLGlobe = React.createClass({
       var settime = function(globe, t) {
         return function() {
           new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
-          var y = ReactDOM.findDOMNode(_this.refs[('year'+years[t])]);
+          var y = ReactDOM.findDOMNode(this.refs[('year'+years[t])]);
           if (y.getAttribute('class') === 'year active') {
             return;
           }
@@ -60,17 +59,8 @@ var WebGLGlobe = React.createClass({
         var y = ReactDOM.findDOMNode(this.refs[('year'+years[i])]);
         y.addEventListener('mouseover', settime(globe,i), false);
       }
-
-      var xhr;
       TWEEN.start();
 
-
-      // xhr = new XMLHttpRequest();
-      // xhr.open('GET', '/assets/population909500.json', true);
-      // var onreadystatechangecallback = function(e) {
-      //   if (xhr.readyState === 4) {
-      //     if (xhr.status === 200) {
-      // var data = JSON.parse(xhr.responseText);
       var data = json_data;
       window.data = data;
       for (i=0;i<data.length;i++) {
@@ -80,15 +70,10 @@ var WebGLGlobe = React.createClass({
       (settime(globe,0).bind(this))();
       globe.animate();
       document.body.style.backgroundImage = 'none'; // remove loading
-      //     }
-      //   }
-      // };
-      // xhr.onreadystatechange = onreadystatechangecallback.bind(this);
-      // xhr.send(null);
     }
 
   }
 
-});
+};
 
-module.exports = WebGLGlobe;
+export default WebGLGlobe;
