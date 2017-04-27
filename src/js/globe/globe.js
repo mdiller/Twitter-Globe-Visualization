@@ -13,7 +13,7 @@
 
 var THREE = require("../globe/third-party/three.min.js");
 
-var DAT = DAT || {};
+var DAT = {};
 
 DAT.Globe = function(container, opts) {
   opts = opts || {};
@@ -167,7 +167,7 @@ DAT.Globe = function(container, opts) {
     }, false);
   }
 
-  addData = function(data, opts) {
+  function addData(data, opts) {
     var lat, lng, size, color, i, step, colorFnWrapper;
 
     opts.animated = opts.animated || false;
@@ -387,7 +387,7 @@ DAT.Globe = function(container, opts) {
     var l = validMorphs.length-1;
     var scaledt = t*l+1;
     var index = Math.floor(scaledt);
-    for (i=0;i<validMorphs.length;i++) {
+    for (var i=0;i<validMorphs.length;i++) {
       this.points.morphTargetInfluences[validMorphs[i]] = 0;
     }
     var lastIndex = index - 1;
