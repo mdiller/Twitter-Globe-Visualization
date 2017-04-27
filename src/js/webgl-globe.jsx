@@ -42,6 +42,7 @@ class WebGLGlobe extends React.Component {
 
       var settime = function(globe, t) {
         return function() {
+          console.log("hello" + t);
           new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
           var y = ReactDOM.findDOMNode(this.refs[('year'+years[t])]);
           if (y.getAttribute('class') === 'year active') {
@@ -59,7 +60,6 @@ class WebGLGlobe extends React.Component {
         var y = ReactDOM.findDOMNode(this.refs[('year'+years[i])]);
         y.addEventListener('mouseover', settime(globe,i), false);
       }
-      TWEEN.start();
 
       var data = json_data;
       window.data = data;
@@ -67,7 +67,7 @@ class WebGLGlobe extends React.Component {
         globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
       }
       globe.createPoints();
-      (settime(globe,0).bind(this))();
+      settime(globe, 0).bind(this)();
       globe.animate();
       document.body.style.backgroundImage = 'none'; // remove loading
     }

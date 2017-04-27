@@ -145,7 +145,7 @@ DAT.Globe = function(container, opts) {
 
     point = new THREE.Mesh(geometry);
 
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.setSize(w, h);
 
     renderer.domElement.style.position = 'absolute';
