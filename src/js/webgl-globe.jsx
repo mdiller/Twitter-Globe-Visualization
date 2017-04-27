@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom';
-import json_data from '../../www/assets/population909500.json';
+import json_data from '../json/population909500.json';
 import React from 'react';
-import Detector from './third-party/Detector.js';
-import TWEEN from './third-party/Tween.js';
+import Detector from '../third-party/Detector.js';
+import TWEEN from '../third-party/Tween.js';
 import DAT from './globe.js';
 
 // import SearchForm  from './search-form.jsx';

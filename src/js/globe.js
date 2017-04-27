@@ -11,7 +11,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-var THREE = require("../globe/third-party/three.min.js");
+var THREE = require("../third-party/three.min.js");
 
 var DAT = {};
 
