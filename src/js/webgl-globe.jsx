@@ -7,6 +7,10 @@ import DAT from './globe.js';
 import SearchForm  from './search-form.jsx';
 
 class WebGLGlobe extends React.Component {
+  constructor(props) {
+    super(props);
+    this.doQuery = this.doQuery.bind(this);
+  }
   render() {
     return (
       <div>
@@ -16,7 +20,7 @@ class WebGLGlobe extends React.Component {
           </div>
 
           <div id="currentInfo">
-            <SearchForm />
+            <SearchForm queryFunc={this.doQuery} />
             <span ref="year1990" className="year">1990</span>
             <span ref="year1995" className="year">1995</span>
             <span ref="year2000" className="year">2000</span>
@@ -30,6 +34,13 @@ class WebGLGlobe extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return false;
   }
+  doQuery(value) {
+    var magnitude = parseFloat(value) || 0.1;
+
+    this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 == 2 ? magnitude : n), {format: 'magnitude', name: 'replaced', animated: true});
+    this.globe.createPoints();
+    new TWEEN.Tween(this.globe).to({time: 0}, 500).easing(TWEEN.Easing.Cubic.EaseOut).start();
+  }
   componentDidMount() {
     var _this = this;
     var container = ReactDOM.findDOMNode(this.refs['globeBox']);
@@ -38,13 +49,14 @@ class WebGLGlobe extends React.Component {
     } else {
       var years = ['1990','1995','2000'];
 
-      var opts = {imgDir: 'assets/'};
-      var globe = new DAT.Globe(container, opts);
+      var opts = {imgDir: 'assets/', animated: false};
+      this.globe = new DAT.Globe(container, opts);
+      var globe = this.globe;
       var i, tweens = [];
 
       var settime = function(globe, t) {
         return function() {
-          new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
+          new TWEEN.Tween(globe).to({time: t / years.length}, 500).easing(TWEEN.Easing.Cubic.EaseOut).start();
           var y = ReactDOM.findDOMNode(_this.refs[('year'+years[t])]);
           if (y.getAttribute('class') === 'year active') {
             return;
@@ -63,11 +75,7 @@ class WebGLGlobe extends React.Component {
         y.addEventListener('mouseover', settime(globe,i), false);
       }
 
-      var data = json_data;
-      window.data = data;
-      for (i=0;i<data.length;i++) {
-        globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
-      }
+      globe.replaceData(json_data[0][1].map((n, index) => index % 3 == 2 ? 0.1 : n), {format: 'magnitude', name: 'replaced', animated: true});
       globe.createPoints();
       settime(globe, 0).bind(this)();
       globe.animate();

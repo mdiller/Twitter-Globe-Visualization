@@ -224,6 +224,9 @@ DAT.Globe = function(container, opts) {
 
   function createPoints() {
     if (this._baseGeometry !== undefined) {
+      if(this.points !== undefined) {
+        scene.remove(this.points);
+      }
       if (this.is_animated === false) {
         this.points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
               color: 0xffffff,
@@ -272,6 +275,12 @@ DAT.Globe = function(container, opts) {
 
     subgeo.merge(point.geometry, point.matrix);
   }
+
+  function replaceData(data, opts) {
+    this._baseGeometry = undefined;
+    this._morphTargetId = undefined;
+    this.addData(data, opts);
+  } 
 
   function onMouseDown(event) {
     event.preventDefault();
@@ -403,6 +412,7 @@ DAT.Globe = function(container, opts) {
 
   this.addData = addData;
   this.createPoints = createPoints;
+  this.replaceData = replaceData;
   this.renderer = renderer;
   this.scene = scene;
 

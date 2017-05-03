@@ -4,6 +4,7 @@ class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: ''};
+    this.queryFunc = props.queryFunc;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,8 +15,8 @@ class SearchForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('Submitted query: ' + this.state.value);
     event.preventDefault();
+    this.queryFunc(this.state.value);
   }
 
   render() {
