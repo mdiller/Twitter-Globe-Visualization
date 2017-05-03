@@ -10,19 +10,20 @@ class WebGLGlobe extends React.Component {
   render() {
     return (
       <div>
-        <div className="container" ref="container"></div>
+        <div>
+          <div id="title">
+            Twitter Location Search
+          </div>
 
-        <div id="title">
-          Twitter Location Search
+          <div id="currentInfo">
+            <SearchForm />
+            <span ref="year1990" className="year">1990</span>
+            <span ref="year1995" className="year">1995</span>
+            <span ref="year2000" className="year">2000</span>
+          </div>
         </div>
-
-        <div id="currentInfo">
-          <SearchForm />
-          <span ref="year1990" className="year">1990</span>
-          <span ref="year1995" className="year">1995</span>
-          <span ref="year2000" className="year">2000</span>
+        <div id="globeBox" ref="globeBox">
         </div>
-
       </div>
     );
   }
@@ -31,7 +32,7 @@ class WebGLGlobe extends React.Component {
   }
   componentDidMount() {
     var _this = this;
-    var container = ReactDOM.findDOMNode(this);
+    var container = ReactDOM.findDOMNode(this.refs['globeBox']);
     if(!Detector.webgl){
       Detector.addGetWebGLMessage();
     } else {

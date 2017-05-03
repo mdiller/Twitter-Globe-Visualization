@@ -237,7 +237,7 @@ DAT.Globe = function(container, opts) {
           console.log('padding', padding);
           for(var i=0; i<=padding; i++) {
             console.log('padding',i);
-            this._baseGeometry.morphTargets.push({'name': 'morphPadding'+i, vertices: this._baseGeometry.vertices});
+            this._baseGeometry.morphTargets.push({'name': 'morphPadding' + i, vertices: this._baseGeometry.vertices});
           }
         }
         this.points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
