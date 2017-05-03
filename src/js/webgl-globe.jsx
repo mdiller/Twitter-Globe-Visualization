@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom';
 import json_data from '../json/population909500.json';
 import React from 'react';
 import Detector from '../third-party/Detector.js';
-import TWEEN from '../third-party/Tween.js';
 import DAT from './globe.js';
 import SearchForm  from './search-form.jsx';
 
@@ -23,8 +22,7 @@ class WebGLGlobe extends React.Component {
             <SearchForm queryFunc={this.doQuery} />
           </div>
         </div>
-        <div id="globeBox" ref="globeBox">
-        </div>
+        <div id="globeBox" ref="globeBox"></div>
       </div>
     );
   }
@@ -34,7 +32,7 @@ class WebGLGlobe extends React.Component {
   doQuery(value) {
     var magnitude = parseFloat(value) || 0.1;
 
-    this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 == 2 ? magnitude : n), {format: 'magnitude', name: 'replaced', animated: true});
+    this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 === 2 ? magnitude : n), {format: 'magnitude', name: 'replaced', animated: true});
     this.globe.createPoints();
     this.globe.time = 0; // renders
   }
@@ -47,15 +45,14 @@ class WebGLGlobe extends React.Component {
       var opts = {imgDir: 'assets/', animated: false};
       this.globe = new DAT.Globe(container, opts);
 
-      this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 == 2 ? 0.1 : n), {format: 'magnitude', name: 'replaced', animated: true});
+      this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 === 2 ? 0.1 : n), {format: 'magnitude', name: 'replaced', animated: true});
       this.globe.createPoints();
       this.globe.time = 0;
       this.globe.animate();
       document.body.style.backgroundImage = 'none'; // remove loading img
+      console.log("globe setup done!");
     }
-
   }
-
 };
 
 export default WebGLGlobe;

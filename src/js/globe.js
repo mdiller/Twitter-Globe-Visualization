@@ -71,12 +71,11 @@ DAT.Globe = function(container, opts) {
   };
 
   var camera, scene, renderer, w, h;
-  var mesh, atmosphere, point;
+  var mesh, point;
 
   var overRenderer;
 
   var curZoomSpeed = 0;
-  var zoomSpeed = 50;
 
   var mouse = { x: 0, y: 0 }, mouseOnDown = { x: 0, y: 0 };
   var rotation = { x: 0, y: 0 },
@@ -84,7 +83,6 @@ DAT.Globe = function(container, opts) {
       targetOnDown = { x: 0, y: 0 };
 
   var distance = 100000, distanceTarget = 100000;
-  var padding = 40;
   var PI_HALF = Math.PI / 2;
 
   function init() {
@@ -175,7 +173,7 @@ DAT.Globe = function(container, opts) {
     opts.animated = opts.animated || false;
     this.is_animated = opts.animated;
     opts.format = opts.format || 'magnitude'; // other option is 'legend'
-    console.log(opts.format);
+    // console.log(opts.format);
     if (opts.format === 'magnitude') {
       step = 3;
       colorFnWrapper = function(data, i) { return colorFn(data[i+2]); }
@@ -183,7 +181,7 @@ DAT.Globe = function(container, opts) {
       step = 4;
       colorFnWrapper = function(data, i) { return colorFn(data[i+3]); }
     } else {
-      throw('error: format not supported: '+opts.format);
+      throw new Error(`error: format not supported: ${opts.format}`);
     }
 
     if (opts.animated) {
@@ -211,7 +209,7 @@ DAT.Globe = function(container, opts) {
       lng = data[i + 1];
       color = colorFnWrapper(data,i);
       size = data[i + 2];
-      size = size*200;
+      size *= 200;
       addPoint(lat, lng, size, color, subgeo);
     }
     if (opts.animated) {
@@ -235,11 +233,11 @@ DAT.Globe = function(container, opts) {
             }));
       } else {
         if (this._baseGeometry.morphTargets.length < 8) {
-          console.log('t l',this._baseGeometry.morphTargets.length);
+          // console.log('t l',this._baseGeometry.morphTargets.length);
           var padding = 8-this._baseGeometry.morphTargets.length;
-          console.log('padding', padding);
+          // console.log('padding', padding);
           for(var i=0; i<=padding; i++) {
-            console.log('padding',i);
+            // console.log('padding',i);
             this._baseGeometry.morphTargets.push({'name': 'morphPadding' + i, vertices: this._baseGeometry.vertices});
           }
         }
@@ -341,6 +339,8 @@ DAT.Globe = function(container, opts) {
       case 40:
         zoom(-100);
         event.preventDefault();
+        break;
+      default:
         break;
     }
   }
