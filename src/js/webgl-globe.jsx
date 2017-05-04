@@ -38,20 +38,22 @@ class WebGLGlobe extends React.Component {
   }
   componentDidMount() {
     var _this = this;
-    var container = ReactDOM.findDOMNode(this.refs['globeBox']);
-    if(!Detector.webgl){
-      Detector.addGetWebGLMessage();
-    } else {
-      var opts = {imgDir: 'assets/', animated: false};
-      this.globe = new DAT.Globe(container, opts);
+    setTimeout(function () {
+      var container = ReactDOM.findDOMNode(_this.refs['globeBox']);
+      if(!Detector.webgl){
+        Detector.addGetWebGLMessage();
+      } else {
+        var opts = {imgDir: 'assets/', animated: false};
+        _this.globe = new DAT.Globe(container, opts);
 
-      this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 === 2 ? 0.1 : n), {format: 'magnitude', name: 'replaced', animated: true});
-      this.globe.createPoints();
-      this.globe.time = 0;
-      this.globe.animate();
-      document.body.style.backgroundImage = 'none'; // remove loading img
-      console.log("globe setup done!");
-    }
+        _this.globe.replaceData(json_data[0][1].map((n, index) => index % 3 === 2 ? 0.1 : n), {format: 'magnitude', name: 'replaced', animated: true});
+        _this.globe.createPoints();
+        _this.globe.time = 0;
+        _this.globe.animate();
+        document.body.style.backgroundImage = 'none'; // remove loading img
+        console.log("globe setup done!"); // DO THIS WHEN WE'RE LOADIN
+      }
+    }, 0);
   }
 };
 
