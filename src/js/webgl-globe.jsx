@@ -4,6 +4,7 @@ import React from 'react';
 import Detector from '../third-party/Detector.js';
 import DAT from './globe.js';
 import SearchForm  from './search-form.jsx';
+import LoadingImg from '../images/loading.gif';
 
 class WebGLGlobe extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class WebGLGlobe extends React.Component {
     this.globe.time = 0; // renders
   }
   componentDidMount() {
+    document.body.style.background = `#000000 url(${LoadingImg}) center center no-repeat`;
     var _this = this;
     setTimeout(function () {
       var container = ReactDOM.findDOMNode(_this.refs['globeBox']);

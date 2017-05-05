@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchImg from '../images/search.svg';
 
 class SearchForm extends React.Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class SearchForm extends React.Component {
           onChange={this.handleChange} />
         <input 
           type="submit"
-          value=" " />
+          value=" " 
+          style={{ backgroundImage: `url(${SearchImg})` }} />
       </form>
     );
   }
