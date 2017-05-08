@@ -42,7 +42,7 @@ class WebGLGlobe extends React.Component {
               {this.state.searchInfo ? this.state.searchInfo : ""}
             </div>
             <span id="sourceLink">
-              <a href="https://github.com/mdiller/dotabase-web">
+              <a href="https://github.com/mdiller/Twitter-Globe-Visualization">
                 <img src={GithubImg} alt='Github repository'></img>
                 Source on GitHub
               </a>
