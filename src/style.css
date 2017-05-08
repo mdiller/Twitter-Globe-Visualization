@@ -94,3 +94,19 @@ a:hover {
   padding: 10px;
   z-index: 2;
 }
+
+#sourceLink {
+  height: 32px;
+  line-height: 32px;
+}
+
+#sourceLink a {
+  height: 32px;
+  vertical-align: middle;
+}
+
+#sourceLink img {
+  height: 24px;
+  width: 24px;
+  margin-right: 5px;
+}

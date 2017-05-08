@@ -4,6 +4,7 @@ import Detector from '../third-party/Detector.js';
 import DAT from './globe.js';
 import SearchImg from '../images/search.svg';
 import LoadingImg from '../images/loading.gif';
+import GithubImg from '../images/github.png';
 var request = require('request');
 
 
@@ -40,6 +41,12 @@ class WebGLGlobe extends React.Component {
             <div>
               {this.state.searchInfo ? this.state.searchInfo : ""}
             </div>
+            <span id="sourceLink">
+              <a href="https://github.com/mdiller/dotabase-web">
+                <img src={GithubImg} alt='Github repository'></img>
+                Source on GitHub
+              </a>
+            </span>
           </div>
         </div>
         <div id="globeBox" ref="globeBox"></div>
@@ -47,8 +54,7 @@ class WebGLGlobe extends React.Component {
     );
   }
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(this.state.loading != nextState.loading || this.state.searchInfo != nextState.searchInfo);
-    return this.state.loading != nextState.loading || this.state.searchInfo != nextState.searchInfo;
+    return this.state.loading !== nextState.loading || this.state.searchInfo !== nextState.searchInfo;
   }
   searchChanged(event) {
     this.setState({searchQuery: event.target.value});
