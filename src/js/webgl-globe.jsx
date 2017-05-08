@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom';
-import json_data from '../json/population909500.json';
 import React from 'react';
 import Detector from '../third-party/Detector.js';
 import DAT from './globe.js';
@@ -12,6 +11,10 @@ class WebGLGlobe extends React.Component {
   constructor(props) {
     super(props);
     this.doQuery = this.doQuery.bind(this);
+    this.state = {
+      loading: false,
+      searchInfo: null
+    };
   }
   render() {
     return (
@@ -22,7 +25,8 @@ class WebGLGlobe extends React.Component {
           </div>
 
           <div id="currentInfo">
-            <SearchForm queryFunc={this.doQuery} />
+            <SearchForm queryFunc={this.doQuery} loading={this.state.loading}/>
+            {this.state.searchInfo ? this.state.searchInfo : ""}
           </div>
         </div>
         <div id="globeBox" ref="globeBox"></div>
@@ -30,7 +34,7 @@ class WebGLGlobe extends React.Component {
     );
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return false;
+    return true;
   }
   doQuery(value) {
     let url = 'http://web.engr.oregonstate.edu/~dillerm/globe/globe_query.php';
@@ -38,6 +42,7 @@ class WebGLGlobe extends React.Component {
     if(value && value !== "") {
       queryparams["q"] = value;
     }
+    this.setState({loading: true});
 
     request({ url: url, qs: queryparams }, (err, resp, body) => {
       if(err) { throw err; }
@@ -45,7 +50,8 @@ class WebGLGlobe extends React.Component {
 
       var joined_data = [];
 
-      let max_count = Math.max(...data.map(l => l.count));
+      let counts = data.map(l => l.count);
+      let max_count = Math.max(...counts);
 
       data.forEach(location => {
         joined_data = joined_data.concat([location.lat, location.long, location.count / max_count]);
@@ -54,6 +60,11 @@ class WebGLGlobe extends React.Component {
       this.globe.replaceData(joined_data, {format: 'magnitude', name: 'replaced', animated: true});
       this.globe.createPoints();
       this.globe.time = 0; // renders
+
+      this.setState({
+        searchInfo: `${counts.reduce((a, b) => a + b, 0)} tweets from ${data.length} locations`,
+        loading: false
+      });
     });
   }
   componentDidMount() {
