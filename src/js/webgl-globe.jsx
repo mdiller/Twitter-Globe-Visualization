@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import Detector from '../third-party/Detector.js';
 import DAT from './globe.js';
-import SearchForm  from './search-form.jsx';
+import SearchImg from '../images/search.svg';
 import LoadingImg from '../images/loading.gif';
 var request = require('request');
 
@@ -10,10 +10,12 @@ var request = require('request');
 class WebGLGlobe extends React.Component {
   constructor(props) {
     super(props);
-    this.doQuery = this.doQuery.bind(this);
+    this.searchChanged = this.searchChanged.bind(this);
+    this.searchSubmit = this.searchSubmit.bind(this);
     this.state = {
       loading: false,
-      searchInfo: null
+      searchInfo: null,
+      searchQuery: ""
     };
   }
   render() {
@@ -25,8 +27,19 @@ class WebGLGlobe extends React.Component {
           </div>
 
           <div id="currentInfo">
-            <SearchForm queryFunc={this.doQuery} loading={this.state.loading}/>
-            {this.state.searchInfo ? this.state.searchInfo : ""}
+            <form onSubmit={this.searchSubmit}>
+              <input 
+                type="text" 
+                placeholder="search for tweets..."
+                onChange={this.searchChanged} />
+              <input 
+                type="submit"
+                value=" " 
+                style={{ backgroundImage: `url(${this.state.loading ? LoadingImg : SearchImg})` }} />
+            </form>
+            <div>
+              {this.state.searchInfo ? this.state.searchInfo : ""}
+            </div>
           </div>
         </div>
         <div id="globeBox" ref="globeBox"></div>
@@ -34,13 +47,20 @@ class WebGLGlobe extends React.Component {
     );
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return true;
+    console.log(this.state.loading != nextState.loading || this.state.searchInfo != nextState.searchInfo);
+    return this.state.loading != nextState.loading || this.state.searchInfo != nextState.searchInfo;
   }
-  doQuery(value) {
+  searchChanged(event) {
+    this.setState({searchQuery: event.target.value});
+  }
+  searchSubmit(event) {
+    if (event) {
+      event.preventDefault();
+    }
     let url = 'http://web.engr.oregonstate.edu/~dillerm/globe/globe_query.php';
     let queryparams = { precision: 0 };
-    if(value && value !== "") {
-      queryparams["q"] = value;
+    if(this.state.searchQuery && this.state.searchQuery !== "") {
+      queryparams["q"] = this.state.searchQuery;
     }
     this.setState({loading: true});
 
@@ -78,7 +98,7 @@ class WebGLGlobe extends React.Component {
         var opts = {imgDir: 'assets/', animated: false};
         _this.globe = new DAT.Globe(container, opts);
 
-        _this.doQuery(null);
+        _this.searchSubmit(null);
         _this.globe.animate();
         document.body.style.backgroundImage = 'none'; // remove loading img
         console.log("globe setup done!"); // DO THIS WHEN WE'RE LOADIN
